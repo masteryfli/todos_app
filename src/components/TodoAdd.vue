@@ -1,6 +1,6 @@
 <template>
   <div class="input-add">
-      <input type="text" placeholder="请输入任务名称" v-model="name" @keyup.enter="add">
+      <input type="text" placeholder="请输入任务名称" v-model="name" @keyup.enter="add" ref="inputRef" />
       <button @click="add">
         <i class="plus"></i>
       </button>
@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, onMounted, ref } from 'vue'
 import { ITodo } from '../interface/todo'
 
 export default defineComponent({
@@ -16,6 +16,11 @@ export default defineComponent({
   setup (props) {
     // 定义一个ref类型的数据
     const name = ref('')
+    // 页面聚焦
+    const inputRef = ref<HTMLElement | null>(null)
+    onMounted(() => {
+      inputRef.value && inputRef.value.focus()
+    })
     // 添加数据的方法
     const add = () => {
       // 获取文本框输入的数据
@@ -35,7 +40,8 @@ export default defineComponent({
     }
     return {
       add,
-      name
+      name,
+      inputRef
     }
   },
   props: {
